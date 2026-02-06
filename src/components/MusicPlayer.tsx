@@ -90,7 +90,7 @@ export default function MusicPlayer() {
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1, duration: 0.5 }}
-                className="fixed bottom-6 right-6 z-40"
+                className="fixed top-6 right-6 z-40"
             >
                 <div className="flex items-center gap-2">
                     {/* Controls */}

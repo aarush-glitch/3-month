@@ -137,7 +137,7 @@ export default function Home() {
                   transition={{ delay: 0.5 }}
                   className="text-[var(--text-secondary)] text-lg sm:text-xl mb-8"
                 >
-                  I made something special for you...
+                  I made something for you. Try not to cringe.
                 </motion.p>
 
                 <motion.p
@@ -159,9 +159,17 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   className="text-2xl sm:text-3xl font-semibold text-[var(--text-primary)] mb-8"
                 >
-                  Our journey so far...
+                  You've successfully tolerated me for...
                 </motion.h2>
                 <Timer />
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                  className="text-sm text-[var(--text-muted)] mt-6 italic text-center"
+                >
+                  Yes I've been counting and yes hopefully this doesn't stop
+                </motion.p>
               </div>
             )}
 

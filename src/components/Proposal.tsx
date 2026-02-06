@@ -12,18 +12,18 @@ export default function Proposal() {
     const [noAttempts, setNoAttempts] = useState(0);
     const [noPosition, setNoPosition] = useState({ x: 120, y: 0 });
 
-    const maxScale = 8; // When Yes covers the screen
-    const scaleIncrement = 0.8; // How much Yes grows each time
+    const maxScale = 8;
+    const scaleIncrement = 0.8;
 
     const noButtonPhrases = [
         "No",
-        "Are you sure?",
-        "Really?",
-        "Think again!",
-        "Pretty please?",
-        "I'll be sad :(",
-        "Last chance...",
-        "Okay fine...",
+        "You sure?",
+        "Really though?",
+        "Think harder",
+        "Wrong answer",
+        "Try again",
+        "Nope, try again",
+        "...",
     ];
 
     const triggerConfetti = useCallback(() => {
@@ -61,7 +61,6 @@ export default function Proposal() {
         setSaidYes(true);
         triggerConfetti();
 
-        // Send notification
         try {
             await sendYesNotification();
             console.log('Notification sent successfully!');
@@ -71,11 +70,9 @@ export default function Proposal() {
     };
 
     const handleNoInteraction = () => {
-        // Grow Yes button
         setYesScale(prev => Math.min(prev + scaleIncrement, maxScale));
         setNoAttempts(prev => Math.min(prev + 1, noButtonPhrases.length - 1));
 
-        // Move No button to random position
         const maxX = 200;
         const maxY = 150;
         const newX = (Math.random() - 0.5) * maxX * 2;
@@ -83,7 +80,6 @@ export default function Proposal() {
         setNoPosition({ x: newX, y: newY });
     };
 
-    // Check if Yes button is big enough to hide No
     const shouldHideNo = yesScale >= maxScale;
 
     if (saidYes) {
@@ -113,7 +109,7 @@ export default function Proposal() {
                     transition={{ delay: 0.3 }}
                     className="text-3xl sm:text-4xl font-bold text-[var(--text-primary)]"
                 >
-                    Yay! 🎉
+                    Finally! 🎉
                 </motion.h2>
 
                 <motion.p
@@ -122,7 +118,7 @@ export default function Proposal() {
                     transition={{ delay: 0.5 }}
                     className="text-lg text-[var(--text-secondary)] max-w-md"
                 >
-                    I knew you&apos;d say yes! Can&apos;t wait to celebrate with you, my Valentine! 💕
+                    Took you long enough. See you soon, Valentine 😏
                 </motion.p>
 
                 <motion.div
@@ -169,15 +165,15 @@ export default function Proposal() {
                 </motion.div>
 
                 <h2 className="text-2xl sm:text-4xl font-bold text-[var(--text-primary)] mb-2">
-                    So, Meethi...
+                    Alright Meethi...
                 </h2>
                 <p className="text-xl sm:text-2xl text-[var(--text-secondary)] font-medium">
-                    Will you be my Valentine? 💝
+                    Be my Valentine? (You don't really have a choice)
                 </p>
             </div>
 
             <div className="flex gap-4 items-center justify-center relative min-h-[120px] w-full">
-                {/* Yes Button - grows on No hover/click */}
+                {/* Yes Button */}
                 <motion.button
                     onClick={handleYes}
                     animate={{
@@ -193,7 +189,6 @@ export default function Proposal() {
                      hover:from-[var(--rose-dark)] hover:to-[var(--rose)]
                      z-10"
                     style={{
-                        // When very large, make it fixed and cover screen
                         ...(yesScale >= maxScale - 1 && {
                             position: 'fixed',
                             top: '50%',
@@ -202,10 +197,10 @@ export default function Proposal() {
                         })
                     }}
                 >
-                    Yes! 💕
+                    Yes
                 </motion.button>
 
-                {/* No Button - floats around AND shrinks as Yes grows */}
+                {/* No Button */}
                 <AnimatePresence>
                     {!shouldHideNo && (
                         <motion.button
@@ -241,10 +236,10 @@ export default function Proposal() {
                     className="text-sm text-[var(--text-muted)] italic text-center"
                 >
                     {noAttempts >= 5
-                        ? "The Yes button is getting pretty convincing... 😏"
+                        ? "That button is looking pretty big now..."
                         : noAttempts >= 3
-                            ? "Notice anything growing? 👀"
-                            : "Hmm, that Yes button looks bigger now... 🤔"}
+                            ? "The button is growing. Coincidence?"
+                            : "Interesting choice..."}
                 </motion.p>
             )}
 
@@ -255,7 +250,7 @@ export default function Proposal() {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-lg text-[var(--rose)] font-medium text-center fixed bottom-32 left-0 right-0 z-20"
                 >
-                    I think you know what to do now... 💕
+                    You know what to do.
                 </motion.p>
             )}
         </motion.div>

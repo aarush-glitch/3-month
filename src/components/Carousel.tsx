@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Heart, Sparkles, Star, Coffee, Music } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Skull, Coffee, Gamepad2, Brain, Sparkles } from 'lucide-react';
 
 interface ReasonCard {
     id: number;
@@ -14,32 +14,32 @@ interface ReasonCard {
 const reasons: ReasonCard[] = [
     {
         id: 1,
-        reason: "You have the most infectious laugh that lights up every room",
-        icon: <Sparkles className="w-8 h-8" />,
+        reason: "You laugh at my jokes even when they're terrible (which is often)",
+        icon: <Skull className="w-8 h-8" />,
         gradient: "from-[var(--blush)] to-[var(--rose)]"
     },
     {
         id: 2,
-        reason: "You tolerate my coding addiction (and sometimes even pretend to be interested)",
+        reason: "You pretend to understand my coding rants. Very convincing, 10/10",
         icon: <Coffee className="w-8 h-8" />,
         gradient: "from-[var(--sage)] to-[var(--sage-dark)]"
     },
     {
         id: 3,
-        reason: "Every moment with you feels like a beautiful adventure",
-        icon: <Star className="w-8 h-8" />,
+        reason: "Your sarcasm actually keeps up with mine. Impressive",
+        icon: <Brain className="w-8 h-8" />,
         gradient: "from-[var(--lavender)] to-[var(--blush-light)]"
     },
     {
         id: 4,
-        reason: "You make even the ordinary days feel extraordinary",
-        icon: <Music className="w-8 h-8" />,
+        reason: "You're somehow not annoyed by me yet. Suspicious but I'll take it",
+        icon: <Gamepad2 className="w-8 h-8" />,
         gradient: "from-[var(--rose)] to-[var(--blush-dark)]"
     },
     {
         id: 5,
-        reason: "Being with you just feels like home",
-        icon: <Heart className="w-8 h-8" />,
+        reason: "Hanging out with you is... fine I guess. (It's actually great, don't tell anyone)",
+        icon: <Sparkles className="w-8 h-8" />,
         gradient: "from-[var(--blush-dark)] to-[var(--rose-dark)]"
     }
 ];
@@ -99,7 +99,7 @@ export default function Carousel() {
                 transition={{ duration: 0.6 }}
                 className="text-center text-lg sm:text-xl text-[var(--text-secondary)] mb-6 font-medium"
             >
-                A few reasons why I adore you...
+                Things I lowkey appreciate about you...
             </motion.h2>
 
             <div className="relative h-[220px] sm:h-[200px] flex items-center justify-center perspective-1000">
@@ -172,8 +172,8 @@ export default function Carousel() {
                         key={index}
                         onClick={() => setPage([index, index > currentIndex ? 1 : -1])}
                         className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentIndex
-                                ? 'bg-[var(--rose)] w-6'
-                                : 'bg-[var(--blush)] hover:bg-[var(--blush-dark)]'
+                            ? 'bg-[var(--rose)] w-6'
+                            : 'bg-[var(--blush)] hover:bg-[var(--blush-dark)]'
                             }`}
                         aria-label={`Go to reason ${index + 1}`}
                     />
