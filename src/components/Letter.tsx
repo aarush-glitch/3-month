@@ -1,8 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, X, Flower2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Flower2 } from 'lucide-react';
 
 // Placeholder letter content - user can customize this
 const letterContent = `My Dearest Meethi,
@@ -42,96 +41,45 @@ function FlowerDecoration({ className }: { className?: string }) {
 }
 
 export default function Letter() {
-    const [isOpen, setIsOpen] = useState(false);
-
     return (
-        <>
-            {/* Trigger Button */}
-            <motion.button
-                onClick={() => setIsOpen(true)}
+        <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="relative w-full max-w-md sm:max-w-lg mx-auto vintage-paper rounded-lg p-6 sm:p-8 overflow-auto max-h-[70vh]"
+        >
+            {/* Flower decorations */}
+            <FlowerDecoration className="flower-corner flower-corner-tl" />
+            <FlowerDecoration className="flower-corner flower-corner-br" />
+
+            {/* Letter content */}
+            <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="group flex items-center gap-3 px-6 py-3 
-                   glass rounded-full text-[var(--text-secondary)]
-                   hover:bg-white/80 transition-all duration-300
-                   shadow-md hover:shadow-lg"
+                transition={{ delay: 0.3 }}
+                className="relative z-10"
             >
-                <Mail className="w-5 h-5 group-hover:text-[var(--rose)] transition-colors" />
-                <span className="font-medium">Read my letter to you...</span>
-                <Flower2 className="w-4 h-4 text-[var(--rose)] opacity-0 group-hover:opacity-100 transition-opacity" />
-            </motion.button>
+                {/* Top decoration */}
+                <div className="flex items-center justify-center gap-2 mb-6">
+                    <div className="w-12 h-[1px] bg-gradient-to-r from-transparent to-[var(--blush)]" />
+                    <Flower2 className="w-5 h-5 text-[var(--rose)]" />
+                    <div className="w-12 h-[1px] bg-gradient-to-l from-transparent to-[var(--blush)]" />
+                </div>
 
-            {/* Letter Modal */}
-            <AnimatePresence>
-                {isOpen && (
-                    <>
-                        {/* Backdrop */}
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            onClick={() => setIsOpen(false)}
-                            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50"
-                        />
+                {/* Letter text */}
+                <p className="font-handwritten text-lg sm:text-xl leading-relaxed text-[var(--text-primary)] whitespace-pre-line text-center sm:text-left">
+                    {letterContent}
+                </p>
 
-                        {/* Letter Container */}
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.8, y: 50, rotateX: -15 }}
-                            animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
-                            exit={{ opacity: 0, scale: 0.8, y: 50, rotateX: 15 }}
-                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                            className="fixed inset-4 sm:inset-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2
-                         sm:max-w-xl sm:w-full z-50
-                         vintage-paper rounded-lg p-6 sm:p-10 overflow-auto max-h-[90vh]"
-                        >
-                            {/* Flower decorations */}
-                            <FlowerDecoration className="flower-corner flower-corner-tl" />
-                            <FlowerDecoration className="flower-corner flower-corner-br" />
+                {/* Bottom decoration */}
+                <div className="flex items-center gap-2 mt-6 justify-end">
+                    <div className="w-16 h-[1px] bg-gradient-to-r from-transparent to-[var(--blush)]" />
+                    <Flower2 className="w-4 h-4 text-[var(--sage)]" />
+                </div>
+            </motion.div>
 
-                            {/* Close button */}
-                            <button
-                                onClick={() => setIsOpen(false)}
-                                className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-full
-                         text-[var(--text-muted)] hover:text-[var(--text-secondary)]
-                         hover:bg-[var(--blush-light)] transition-all duration-300"
-                                aria-label="Close letter"
-                            >
-                                <X className="w-5 h-5" />
-                            </button>
-
-                            {/* Letter content */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.2 }}
-                                className="relative z-10"
-                            >
-                                <div className="flex items-center gap-2 mb-6">
-                                    <div className="w-12 h-[1px] bg-gradient-to-r from-transparent to-[var(--blush)]" />
-                                    <Flower2 className="w-5 h-5 text-[var(--rose)]" />
-                                    <div className="w-12 h-[1px] bg-gradient-to-l from-transparent to-[var(--blush)]" />
-                                </div>
-
-                                <p className="font-handwritten text-xl sm:text-2xl leading-relaxed text-[var(--text-primary)]
-                             whitespace-pre-line">
-                                    {letterContent}
-                                </p>
-
-                                <div className="flex items-center gap-2 mt-8 justify-end">
-                                    <div className="w-16 h-[1px] bg-gradient-to-r from-transparent to-[var(--blush)]" />
-                                    <Flower2 className="w-4 h-4 text-[var(--sage)]" />
-                                </div>
-                            </motion.div>
-
-                            {/* Decorative border pattern */}
-                            <div className="absolute inset-3 border border-[var(--blush-light)]/50 rounded pointer-events-none" />
-                        </motion.div>
-                    </>
-                )}
-            </AnimatePresence>
-        </>
+            {/* Decorative border pattern */}
+            <div className="absolute inset-3 border border-[var(--blush-light)]/50 rounded pointer-events-none" />
+        </motion.div>
     );
 }

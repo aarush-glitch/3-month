@@ -1,18 +1,67 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Heart } from 'lucide-react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import Timer from '@/components/Timer';
 import Carousel from '@/components/Carousel';
 import Letter from '@/components/Letter';
 import Proposal from '@/components/Proposal';
 import MusicPlayer from '@/components/MusicPlayer';
 
+// Phase definitions
+const phases = [
+  { id: 'hero', title: 'Welcome' },
+  { id: 'timer', title: 'Our Time' },
+  { id: 'reasons', title: 'Why You' },
+  { id: 'letter', title: 'My Letter' },
+  { id: 'proposal', title: 'The Question' },
+];
+
 export default function Home() {
+  const [currentPhase, setCurrentPhase] = useState(0);
+
+  const goToNext = () => {
+    if (currentPhase < phases.length - 1) {
+      setCurrentPhase(currentPhase + 1);
+    }
+  };
+
+  const goToPrevious = () => {
+    if (currentPhase > 0) {
+      setCurrentPhase(currentPhase - 1);
+    }
+  };
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? '100%' : '-100%',
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction < 0 ? '100%' : '-100%',
+      opacity: 0,
+    }),
+  };
+
+  const [[page, direction], setPage] = useState([0, 0]);
+
+  const paginate = (newDirection: number) => {
+    const newPhase = currentPhase + newDirection;
+    if (newPhase >= 0 && newPhase < phases.length) {
+      setPage([page + newDirection, newDirection]);
+      setCurrentPhase(newPhase);
+    }
+  };
+
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="h-screen w-screen overflow-hidden relative">
       {/* Floating hearts background decoration */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
@@ -35,94 +84,174 @@ export default function Home() {
           >
             <Heart
               className="text-[var(--blush)]"
-              size={20 + Math.random() * 30}
+              size={40 + Math.random() * 40}
               fill="currentColor"
             />
           </motion.div>
         ))}
       </div>
 
-      {/* Main content */}
-      <main className="relative z-10 flex flex-col items-center px-4 py-8 sm:py-12">
-        {/* Hero Section */}
-        <motion.section
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12 sm:mb-16"
-        >
+      {/* Main content area */}
+      <div className="relative z-10 h-full w-full">
+        <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", delay: 0.2 }}
-            className="mb-4"
+            key={currentPhase}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              x: { type: "spring", stiffness: 300, damping: 30 },
+              opacity: { duration: 0.3 }
+            }}
+            className="absolute inset-0 flex items-center justify-center"
           >
-            <Heart
-              className="w-10 h-10 sm:w-12 sm:h-12 text-[var(--rose)] mx-auto heartbeat"
-              fill="currentColor"
-            />
+            {/* Phase 0: Hero */}
+            {currentPhase === 0 && (
+              <div className="text-center px-6">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", delay: 0.2 }}
+                  className="mb-6"
+                >
+                  <Heart
+                    className="w-16 h-16 sm:w-20 sm:h-20 text-[var(--rose)] mx-auto heartbeat"
+                    fill="currentColor"
+                  />
+                </motion.div>
+
+                <motion.h1
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-4xl sm:text-6xl font-bold text-[var(--text-primary)] mb-4"
+                >
+                  Hey, <span className="text-[var(--rose)]">Meethi</span> ✨
+                </motion.h1>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="text-[var(--text-secondary)] text-lg sm:text-xl mb-8"
+                >
+                  I made something special for you...
+                </motion.p>
+
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1 }}
+                  className="text-[var(--text-muted)] text-sm"
+                >
+                  Click the arrow to continue →
+                </motion.p>
+              </div>
+            )}
+
+            {/* Phase 1: Timer */}
+            {currentPhase === 1 && (
+              <div className="text-center px-6">
+                <motion.h2
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-2xl sm:text-3xl font-semibold text-[var(--text-primary)] mb-8"
+                >
+                  Our journey so far...
+                </motion.h2>
+                <Timer />
+              </div>
+            )}
+
+            {/* Phase 2: Reasons Carousel */}
+            {currentPhase === 2 && (
+              <div className="w-full max-w-2xl px-4">
+                <Carousel />
+              </div>
+            )}
+
+            {/* Phase 3: Letter */}
+            {currentPhase === 3 && (
+              <div className="w-full h-full flex items-center justify-center px-4 py-16">
+                <Letter />
+              </div>
+            )}
+
+            {/* Phase 4: Proposal */}
+            {currentPhase === 4 && (
+              <div className="w-full max-w-lg px-4">
+                <Proposal />
+              </div>
+            )}
           </motion.div>
+        </AnimatePresence>
+      </div>
 
-          <h1 className="text-3xl sm:text-5xl font-bold text-[var(--text-primary)] mb-2">
-            Hey, <span className="text-[var(--rose)]">Meethi</span> ✨
-          </h1>
-          <p className="text-[var(--text-secondary)] text-base sm:text-lg">
-            I made something special for you...
-          </p>
-        </motion.section>
-
-        {/* Timer Section */}
-        <motion.section
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="mb-16 sm:mb-20"
+      {/* Navigation buttons */}
+      <div className="fixed bottom-8 left-0 right-0 z-30 flex justify-center items-center gap-4">
+        {/* Previous button */}
+        <motion.button
+          onClick={() => paginate(-1)}
+          disabled={currentPhase === 0}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className={`p-4 rounded-full glass shadow-lg transition-all duration-300
+                     ${currentPhase === 0
+              ? 'opacity-30 cursor-not-allowed'
+              : 'hover:bg-white/80 cursor-pointer'}`}
+          aria-label="Previous"
         >
-          <Timer />
-        </motion.section>
+          <ChevronLeft className="w-6 h-6 text-[var(--text-secondary)]" />
+        </motion.button>
 
-        {/* Carousel Section */}
-        <motion.section
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="w-full max-w-2xl mb-16 sm:mb-20"
-        >
-          <Carousel />
-        </motion.section>
+        {/* Phase indicators */}
+        <div className="flex gap-2">
+          {phases.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                const dir = index > currentPhase ? 1 : -1;
+                setPage([page + dir, dir]);
+                setCurrentPhase(index);
+              }}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentPhase
+                ? 'bg-[var(--rose)] w-6'
+                : 'bg-[var(--blush)] hover:bg-[var(--blush-dark)]'
+                }`}
+              aria-label={`Go to ${phases[index].title}`}
+            />
+          ))}
+        </div>
 
-        {/* Letter Section */}
-        <motion.section
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9 }}
-          className="mb-16 sm:mb-20"
+        {/* Next button */}
+        <motion.button
+          onClick={() => paginate(1)}
+          disabled={currentPhase === phases.length - 1}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className={`p-4 rounded-full glass shadow-lg transition-all duration-300
+                     ${currentPhase === phases.length - 1
+              ? 'opacity-30 cursor-not-allowed'
+              : 'hover:bg-white/80 cursor-pointer'}`}
+          aria-label="Next"
         >
-          <Letter />
-        </motion.section>
+          <ChevronRight className="w-6 h-6 text-[var(--text-secondary)]" />
+        </motion.button>
+      </div>
 
-        {/* Proposal Section */}
-        <motion.section
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1 }}
-          className="w-full max-w-lg mb-12"
-        >
-          <Proposal />
-        </motion.section>
-
-        {/* Footer */}
-        <motion.footer
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="text-center text-sm text-[var(--text-muted)] mt-8 pb-24"
-        >
-          <p className="flex items-center justify-center gap-2">
-            Made with <Heart className="w-4 h-4 text-[var(--rose)] fill-current heartbeat" /> just for you
-          </p>
-        </motion.footer>
-      </main>
+      {/* Footer - small credit */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2 }}
+        className="fixed bottom-2 left-0 right-0 z-20 text-center"
+      >
+        <p className="text-xs text-[var(--text-muted)] flex items-center justify-center gap-1">
+          Made with <Heart className="w-3 h-3 text-[var(--rose)] fill-current" /> for you
+        </p>
+      </motion.div>
 
       {/* Music Player */}
       <MusicPlayer />
