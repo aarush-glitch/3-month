@@ -19,7 +19,7 @@ const START_DATE = new Date('2026-01-12T21:00:00+05:30');
 function calculateTimeElapsed(): TimeElapsed {
   const now = new Date();
   const diff = now.getTime() - START_DATE.getTime();
-  
+
   if (diff < 0) {
     return { years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
   }
@@ -28,26 +28,26 @@ function calculateTimeElapsed(): TimeElapsed {
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
-  
+
   // Calculate years and remaining months/days
   const startYear = START_DATE.getFullYear();
   const startMonth = START_DATE.getMonth();
   const startDay = START_DATE.getDate();
-  
+
   const nowYear = now.getFullYear();
   const nowMonth = now.getMonth();
   const nowDay = now.getDate();
-  
+
   let years = nowYear - startYear;
   let months = nowMonth - startMonth;
   let daysRemaining = nowDay - startDay;
-  
+
   if (daysRemaining < 0) {
     months--;
     const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
     daysRemaining += prevMonth.getDate();
   }
-  
+
   if (months < 0) {
     years--;
     months += 12;
@@ -79,10 +79,10 @@ export default function Timer() {
     const updateTimer = () => {
       setTime(calculateTimeElapsed());
     };
-    
+
     updateTimer();
     const interval = setInterval(updateTimer, 1000);
-    
+
     return () => clearInterval(interval);
   }, []);
 
@@ -106,12 +106,6 @@ export default function Timer() {
       transition={{ duration: 0.8, delay: 0.3 }}
       className="flex flex-col items-center gap-4"
     >
-      <div className="flex items-center gap-2 text-[var(--text-secondary)]">
-        <Heart className="w-4 h-4 text-[var(--rose)] heartbeat" fill="currentColor" />
-        <span className="text-sm tracking-wide">We&apos;ve been hanging out for...</span>
-        <Heart className="w-4 h-4 text-[var(--rose)] heartbeat" fill="currentColor" />
-      </div>
-      
       <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
         {timeUnits.map((unit, index) => (
           <motion.div

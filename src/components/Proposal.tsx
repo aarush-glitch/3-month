@@ -170,6 +170,9 @@ export default function Proposal() {
                 <p className="text-xl sm:text-2xl text-[var(--text-secondary)] font-medium">
                     Be my Valentine? (You don't really have a choice)
                 </p>
+                <p className="text-sm sm:text-base text-[var(--text-muted)] mt-4 max-w-md">
+                    We don't really have to go on 14th because Ik you find the idea of Valentine's Day not so "cool" but let's go have a proper date (Our first date)
+                </p>
             </div>
 
             <div className="flex gap-4 items-center justify-center relative min-h-[120px] w-full">

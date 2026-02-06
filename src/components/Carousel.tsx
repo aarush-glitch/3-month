@@ -124,19 +124,19 @@ export default function Carousel() {
                         className={`absolute w-full max-w-sm cursor-grab active:cursor-grabbing`}
                     >
                         <div
-                            className={`glass rounded-2xl p-6 sm:p-8 bg-gradient-to-br ${reasons[currentIndex].gradient} 
-                         shadow-lg hover:shadow-xl transition-shadow duration-300`}
+                            className="rounded-2xl p-6 sm:p-8 bg-white/90 backdrop-blur-sm border border-[var(--blush)] 
+                         shadow-lg hover:shadow-xl transition-shadow duration-300"
                         >
                             <div className="flex flex-col items-center text-center gap-4">
                                 <motion.div
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
                                     transition={{ type: "spring", delay: 0.2 }}
-                                    className="text-white/90"
+                                    className="text-[var(--rose)] p-3 bg-[var(--blush-light)] rounded-full"
                                 >
                                     {reasons[currentIndex].icon}
                                 </motion.div>
-                                <p className="text-white text-base sm:text-lg font-medium leading-relaxed">
+                                <p className="text-[var(--text-primary)] text-base sm:text-lg font-medium leading-relaxed">
                                     {reasons[currentIndex].reason}
                                 </p>
                             </div>

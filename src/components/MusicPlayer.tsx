@@ -135,7 +135,7 @@ export default function MusicPlayer() {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 10 }}
-                            className="absolute -top-8 right-0 glass rounded-full px-3 py-1
+                            className="absolute top-16 right-0 glass rounded-full px-3 py-1
                         text-xs text-[var(--text-muted)] whitespace-nowrap"
                         >
                             <span className="flex items-center gap-1">
