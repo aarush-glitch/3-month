@@ -159,7 +159,7 @@ export default function Carousel() {
                                     src={currentReason.image}
                                     alt={currentReason.reason}
                                     fill
-                                    className="object-contain"
+                                    className="object-cover"
                                     sizes="(max-width: 768px) 100vw, 400px"
                                 />
                             </div>
