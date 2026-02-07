@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { Heart, Sparkles } from 'lucide-react';
+import Image from 'next/image';
 import { sendYesNotification } from '@/lib/notification';
 
 export default function Proposal() {
@@ -88,8 +89,23 @@ export default function Proposal() {
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ type: "spring", duration: 0.8 }}
-                className="flex flex-col items-center gap-6 text-center py-12"
+                className="flex flex-col items-center gap-6 text-center py-8"
             >
+                {/* Image 20 - Future together */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="relative w-64 h-48 sm:w-80 sm:h-56 rounded-xl overflow-hidden shadow-lg"
+                >
+                    <Image
+                        src="/images/20.jpg"
+                        alt="Our future together"
+                        fill
+                        className="object-cover"
+                    />
+                </motion.div>
+
                 <motion.div
                     animate={{
                         scale: [1, 1.2, 1],
@@ -100,7 +116,7 @@ export default function Proposal() {
                         repeat: Infinity
                     }}
                 >
-                    <Heart className="w-24 h-24 text-[var(--rose)] fill-current" />
+                    <Heart className="w-16 h-16 text-[var(--rose)] fill-current" />
                 </motion.div>
 
                 <motion.h2
@@ -153,29 +169,59 @@ export default function Proposal() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="flex flex-col items-center gap-8 py-8 relative"
+            className="flex flex-col items-center gap-6 py-4 relative"
         >
+            {/* Images row - Image 4 and 6 */}
+            <div className="flex gap-3 sm:gap-4 mb-2">
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-xl overflow-hidden shadow-md"
+                >
+                    <Image
+                        src="/images/4.jpg"
+                        alt="With you"
+                        fill
+                        className="object-cover"
+                    />
+                </motion.div>
+                <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-xl overflow-hidden shadow-md"
+                >
+                    <Image
+                        src="/images/6.jpg"
+                        alt="I love you everyday"
+                        fill
+                        className="object-cover"
+                    />
+                </motion.div>
+            </div>
+
             <div className="text-center">
                 <motion.div
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className="inline-block mb-4"
+                    className="inline-block mb-3"
                 >
-                    <Heart className="w-12 h-12 text-[var(--rose)] fill-current mx-auto" />
+                    <Heart className="w-10 h-10 text-[var(--rose)] fill-current mx-auto" />
                 </motion.div>
 
-                <h2 className="text-2xl sm:text-4xl font-bold text-[var(--text-primary)] mb-2">
+                <h2 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] mb-2">
                     Alright Meethi...
                 </h2>
-                <p className="text-xl sm:text-2xl text-[var(--text-secondary)] font-medium">
-                    Be my Valentine? (You don't really have a choice)
+                <p className="text-lg sm:text-xl text-[var(--text-secondary)] font-medium">
+                    Be my Valentine? (You don&apos;t really have a choice)
                 </p>
-                <p className="text-sm sm:text-base text-[var(--text-muted)] mt-4 max-w-md">
-                    We don't really have to go on 14th because Ik you find the idea of Valentine's Day not so "cool" but let's go have a proper date (Our first date)
+                <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-3 max-w-sm mx-auto">
+                    We don&apos;t really have to go on 14th because Ik you find the idea of Valentine&apos;s Day not so &quot;cool&quot; but let&apos;s go have a proper date (Our first date)
                 </p>
             </div>
 
-            <div className="flex gap-4 items-center justify-center relative min-h-[120px] w-full">
+            <div className="flex gap-4 items-center justify-center relative min-h-[100px] w-full">
                 {/* Yes Button */}
                 <motion.button
                     onClick={handleYes}
