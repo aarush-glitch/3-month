@@ -13,11 +13,11 @@ import PasswordGate from '@/components/PasswordGate';
 
 // Phase definitions
 const phases = [
-  { id: 'hero',        title: 'Welcome'   },
-  { id: 'timer',       title: 'Our Time'  },
-  { id: 'reasons',     title: 'Still You' },
-  { id: 'letter',      title: 'My Letter' },
-  { id: 'voicenotes',  title: 'For You'   },
+  { id: 'hero', title: 'Welcome' },
+  { id: 'timer', title: 'Our Time' },
+  { id: 'reasons', title: 'Still You' },
+  { id: 'letter', title: 'My Letter' },
+  { id: 'voicenotes', title: 'For You' },
 ];
 
 export default function Home() {
@@ -59,33 +59,33 @@ export default function Home() {
       {/* ── Ambient orbs background ── */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         {[
-          { w: 340, x: '8%',  y: '12%', colorA: 'rgba(192,122,80,0.10)',  colorB: 'transparent', dur: 12 },
+          { w: 340, x: '8%', y: '12%', colorA: 'rgba(192,122,80,0.10)', colorB: 'transparent', dur: 12 },
           { w: 260, x: '72%', y: '58%', colorA: 'rgba(123,79,110,0.07)', colorB: 'transparent', dur: 16 },
           { w: 200, x: '35%', y: '75%', colorA: 'rgba(140,175,126,0.08)', colorB: 'transparent', dur: 10 },
-          { w: 280, x: '80%', y: '8%',  colorA: 'rgba(192,122,80,0.07)',  colorB: 'transparent', dur: 14 },
+          { w: 280, x: '80%', y: '8%', colorA: 'rgba(192,122,80,0.07)', colorB: 'transparent', dur: 14 },
           { w: 160, x: '20%', y: '45%', colorA: 'rgba(140,175,126,0.06)', colorB: 'transparent', dur: 18 },
         ].map((orb, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full"
             style={{
-              width:  `${orb.w}px`,
+              width: `${orb.w}px`,
               height: `${orb.w}px`,
-              left:   orb.x,
-              top:    orb.y,
+              left: orb.x,
+              top: orb.y,
               background: `radial-gradient(circle, ${orb.colorA} 0%, ${orb.colorB} 70%)`,
             }}
             animate={{
-              y:       [0, -18, 0],
-              x:       [0, 12, 0],
+              y: [0, -18, 0],
+              x: [0, 12, 0],
               opacity: [0.4, 0.75, 0.4],
-              scale:   [1, 1.08, 1],
+              scale: [1, 1.08, 1],
             }}
             transition={{
               duration: orb.dur,
-              repeat:   Infinity,
-              delay:    i * 2.5,
-              ease:     'easeInOut',
+              repeat: Infinity,
+              delay: i * 2.5,
+              ease: 'easeInOut',
             }}
           />
         ))}
@@ -102,7 +102,7 @@ export default function Home() {
             animate="center"
             exit="exit"
             transition={{
-              x:       { type: 'spring', stiffness: 280, damping: 30 },
+              x: { type: 'spring', stiffness: 280, damping: 30 },
               opacity: { duration: 0.25 },
             }}
             className="absolute inset-0 flex items-center justify-center"
@@ -140,7 +140,7 @@ export default function Home() {
                   transition={{ delay: 0.5 }}
                   className="text-[var(--text-secondary)] text-lg sm:text-xl mb-3 leading-relaxed"
                 >
-                  Three months of the best kind of chaos.
+                  It's been 3 months already and I dont know where time went.
                 </motion.p>
 
                 <motion.p
@@ -149,7 +149,7 @@ export default function Home() {
                   transition={{ delay: 0.7 }}
                   className="text-[var(--text-muted)] text-sm mb-8"
                 >
-                  I made this for you. Fair warning — it&apos;s a lot.
+                  I made this for you. Fair warning - it&apos;s a lottt.
                 </motion.p>
 
                 <motion.p
@@ -188,7 +188,7 @@ export default function Home() {
                   transition={{ delay: 0.9 }}
                   className="text-sm text-[var(--text-muted)] mt-6 italic"
                 >
-                  Every single second has counted ✨
+                  Every single second counts because it helps me annoy you more ✨
                 </motion.p>
               </div>
             )}
