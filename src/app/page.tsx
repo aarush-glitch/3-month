@@ -9,6 +9,7 @@ import Letter from '@/components/Letter';
 import VoiceNotes from '@/components/Proposal';
 import MusicPlayer from '@/components/MusicPlayer';
 import BabysBreath from '@/components/BabysBreath';
+import PasswordGate from '@/components/PasswordGate';
 
 // Phase definitions
 const phases = [
@@ -20,8 +21,13 @@ const phases = [
 ];
 
 export default function Home() {
+  const [unlocked, setUnlocked] = useState(false);
   const [currentPhase, setCurrentPhase] = useState(0);
   const [[page, direction], setPage] = useState([0, 0]);
+
+  if (!unlocked) {
+    return <PasswordGate onUnlock={() => setUnlocked(true)} />;
+  }
 
   const paginate = (newDirection: number) => {
     const newPhase = currentPhase + newDirection;
