@@ -3,23 +3,23 @@
 import { motion } from 'framer-motion';
 import BabysBreath from '@/components/BabysBreath';
 
-const letterContent = `My dearest Meethi,
+const letterContent = `My most ragebaiting Meethi,
 
-Three months.
+Three months, three months.
 
-Honestly, I didn't expect it to feel like this — whatever "this" even is. You just kind of crept into my days without asking, and now I can't picture them the same without you in them.
+Honestly, I didn't expect it to feel like this, the first two months were crazy fast and I haven't gotten closer to anyone than I did in those two months but this last month, the slowness, the real life stuff, this all taught me that even during stillness and duress you're the only person I want near me and the only person that can lift my mood in a second.
 
-I think about the time you checked on me when I was having a terrible day. You didn't say much. You didn't need to. That stuck with me more than you know.
+It's just been 3 months but I can't seem to remember the days when we weren't this close. It's just a great feeling to have. I don't know exactly what you feel about me but if you were in my shoes you'd be dancing non stop, you got the girl of your dreams and she's better than what you've ever dreamt of.
 
-You're weirdly patient with me. You push back when I need it. You're honest in this way that doesn't feel cruel — which is rare, and I appreciate it more than I've probably told you.
+You're weirdly patient with me. You push back when I need it. You're honest in this way that doesn't feel cruel which is rare, and I appreciate it more than I've probably told you.
 
-You make ordinary things feel worth paying attention to. A walk. A voice note. A weird little scribble on paper. Things that should be nothing end up mattering because you're in them.
+You make ordinary things feel worth paying attention to. A voice note. A weird little scribble on paper. A walk. God I miss those walks in college. Things that should be nothing end up mattering because you're in them.
 
-I know we're still figuring out what this is and where it goes. I'm okay with that. I just know that three months in, I'd choose this again.
+I don't think I'll ever be able to express how much I love you but I can definitely say that instead of a dead resting face you've turned my resting face into a smiling face and that's all you.
 
 Here's to whatever comes next.
 
-— Always yours ♡`;
+— Forever and Always ♡`;
 
 export default function Letter() {
   return (
