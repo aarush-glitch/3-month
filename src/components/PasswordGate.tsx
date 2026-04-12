@@ -9,7 +9,7 @@ interface PasswordGateProps {
   onUnlock: () => void;
 }
 
-const CORRECT_PASSWORD = 'Ihateyousomuchxyz';
+const CORRECT_PASSWORD = 'Ihateyou';
 
 export default function PasswordGate({ onUnlock }: PasswordGateProps) {
   const [value, setValue] = useState('');

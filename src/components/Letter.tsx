@@ -9,7 +9,7 @@ Three months, three months.
 
 Honestly, I didn't expect it to feel like this, the first two months were crazy fast and I haven't gotten closer to anyone than I did in those two months but this last month, the slowness, the real life stuff, this all taught me that even during stillness and duress you're the only person I want near me and the only person that can lift my mood in a second.
 
-It's just been 3 months but I can't seem to remember the days when we weren't this close. It's just a great feeling to have. I don't know exactly what you feel about me but if you were in my shoes you'd be dancing non stop, you got the girl of your dreams and she's better than what you've ever dreamt of.
+It's just been 3 months but I can't seem to remember the days when we weren't this close. It's just a great feeling to have. I don't know exactly what you feel about me but if you were in my shoes you'd be dancing non stop. You got the girl of your dreams. She's better than what you've ever dreamt of.
 
 You're weirdly patient with me. You push back when I need it. You're honest in this way that doesn't feel cruel which is rare, and I appreciate it more than I've probably told you.
 
