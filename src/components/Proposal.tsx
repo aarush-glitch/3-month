@@ -24,25 +24,25 @@ const notes = [
     id: 'V3', src: '/vn/V3.m4a',
     label: 'You in your element', sublabel: 'I love this one.',
     bgFrom: '#F2DBC8', bgTo: '#FAF0E8', accent: '#C07A50',
-    photo: { src: '/images/P3.jpeg', caption: 'One of my favourites.' },
+    photo: { src: '/images/P3.JPG', caption: 'The day I understood I could handle this torture forever.' },
   },
   {
     id: 'V4', src: '/vn/V4.m4a',
     label: 'Before we were us', sublabel: '"I\'ll break your heart" 😂',
     bgFrom: '#EDE0F2', bgTo: '#F6F0FA', accent: '#9B6DB0',
-    photo: { src: '/images/P4.jpeg', caption: 'Before all of this.' },
+    photo: { src: '/images/P4.JPG', caption: 'I want this girl to be happy always and on top of the world.' },
   },
   {
     id: 'V5', src: '/vn/V5.m4a',
     label: 'Something silly', sublabel: 'Couldn\'t not save this.',
     bgFrom: '#E4EDDF', bgTo: '#F0F7EC', accent: '#7AAF6A',
-    photo: { src: '/images/P5.jpeg', caption: 'A good day.' },
+    photo: { src: '/images/P5.jpg', caption: 'The day I should\'ve fallen in love with you.' },
   },
   {
     id: 'V6', src: '/vn/V6.m4a',
     label: 'One more thing...', sublabel: 'Save this one for last.',
     bgFrom: '#F0DBC8', bgTo: '#FAF0E8', accent: '#9A5E35',
-    photo: { src: '/images/P6.jpeg', caption: 'Us.' },
+    photo: { src: '/images/P6.jpg', caption: 'The day I fell in love with that smile.' },
   },
 ] as const;
 
@@ -73,7 +73,7 @@ function PhotoReveal({
   onClose: () => void;
 }) {
   useEffect(() => {
-    const t = setTimeout(onClose, 4000);
+    const t = setTimeout(onClose, 6000);
     return () => clearTimeout(t);
   }, [onClose]);
 
@@ -127,7 +127,7 @@ function PhotoReveal({
         className="absolute bottom-0 left-0 h-[3px]"
         style={{ background: accent }}
         initial={{ width: '100%' }} animate={{ width: '0%' }}
-        transition={{ duration: 4, ease: 'linear' }}
+        transition={{ duration: 6, ease: 'linear' }}
       />
     </motion.div>
   );
@@ -179,10 +179,10 @@ function Lightbox({ photo, onClose }: { photo: { src: string; caption: string };
 export default function VoiceNotes() {
   const { fadeToBackground, restoreVolume } = useMusicContext();
 
-  const [playingId,   setPlayingId]   = useState<NoteId | null>(null);
-  const [playedIds,   setPlayedIds]   = useState<Set<NoteId>>(new Set());
+  const [playingId, setPlayingId] = useState<NoteId | null>(null);
+  const [playedIds, setPlayedIds] = useState<Set<NoteId>>(new Set());
   const [revealModal, setRevealModal] = useState<{ src: string; caption: string; accent: string } | null>(null);
-  const [lightbox,    setLightbox]    = useState<{ src: string; caption: string } | null>(null);
+  const [lightbox, setLightbox] = useState<{ src: string; caption: string } | null>(null);
 
   const audioMap = useRef<Map<string, HTMLAudioElement>>(new Map());
 
@@ -192,7 +192,7 @@ export default function VoiceNotes() {
       audio.preload = 'metadata';
       audio.addEventListener('ended', () => {
         setPlayingId(prev => (prev === note.id ? null : prev));
-        restoreVolume();
+        // Music stays faded — user must manually dismiss or play again
       });
       audioMap.current.set(note.id, audio);
     });
@@ -200,7 +200,7 @@ export default function VoiceNotes() {
       audioMap.current.forEach(a => { a.pause(); a.src = ''; });
       restoreVolume();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleToggle = useCallback(
@@ -236,7 +236,7 @@ export default function VoiceNotes() {
   );
 
   const unlockedCount = playedIds.size;
-  const allPlayed     = unlockedCount >= notes.length;
+  const allPlayed = unlockedCount >= notes.length;
 
   /* Ordered unlocked photos for the bottom gallery */
   const unlockedPhotos = notes
@@ -309,7 +309,7 @@ export default function VoiceNotes() {
                 >
                   {isPlaying
                     ? <Pause className="w-3 h-3" />
-                    : <Play  className="w-3 h-3 ml-px" />
+                    : <Play className="w-3 h-3 ml-px" />
                   }
                 </motion.div>
               </div>
@@ -356,7 +356,7 @@ export default function VoiceNotes() {
                     key={photo.id}
                     onClick={() => setLightbox({ src: photo.src, caption: photo.caption })}
                     initial={{ opacity: 0, scale: 0.78, x: 20 }}
-                    animate={{ opacity: 1, scale: 1,    x: 0 }}
+                    animate={{ opacity: 1, scale: 1, x: 0 }}
                     exit={{ opacity: 0, scale: 0.78 }}
                     transition={{ type: 'spring', stiffness: 200, damping: 20 }}
                     whileHover={{ scale: 1.04, rotate: 0 }}
