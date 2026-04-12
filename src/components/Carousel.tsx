@@ -21,7 +21,7 @@ const reasons: ReasonCard[] = [
   { id: 6, reason: "We balance each other out. Your chaos + mine = somehow it works.", image: '/images/x13.jpg', tone: 'funny' },
   { id: 7, reason: "I just included this dirty mirror picture coz I wanted to 👀", image: '/images/x11.jpg', tone: 'soft' },
   { id: 8, reason: "You make me want to be better. For you, and for myself.", image: '/images/x14.jpeg', tone: 'intense' },
-  { id: 9, reason: "Being around you feels calm. Like I'm finally home.", image: '/images/x18.jpg', tone: 'soft' },
+  { id: 9, reason: "Being around you feels calm. Like I'm finally home.", image: '/images/x18.JPG', tone: 'soft' },
   { id: 10, reason: "You light me up. Even on the worst days.", image: '/images/x19.jpg', tone: 'intense' },
 ];
 

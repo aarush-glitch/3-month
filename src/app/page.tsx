@@ -10,6 +10,7 @@ import VoiceNotes from '@/components/Proposal';
 import MusicPlayer from '@/components/MusicPlayer';
 import BabysBreath from '@/components/BabysBreath';
 import PasswordGate from '@/components/PasswordGate';
+import Closing from '@/components/Closing';
 
 // Phase definitions
 const phases = [
@@ -18,6 +19,7 @@ const phases = [
   { id: 'reasons', title: 'Still You' },
   { id: 'letter', title: 'My Letter' },
   { id: 'voicenotes', title: 'For You' },
+  { id: 'closing', title: 'The End' },
 ];
 
 export default function Home() {
@@ -211,6 +213,13 @@ export default function Home() {
             {currentPhase === 4 && (
               <div className="w-full h-full overflow-y-auto flex items-start justify-center px-4 pt-6 pb-24">
                 <VoiceNotes />
+              </div>
+            )}
+
+            {/* ── Phase 5: Closing ── */}
+            {currentPhase === 5 && (
+              <div className="w-full h-full flex items-center justify-center px-4">
+                <Closing />
               </div>
             )}
           </motion.div>

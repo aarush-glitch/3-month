@@ -385,24 +385,18 @@ export default function VoiceNotes() {
         )}
       </AnimatePresence>
 
-      {/* ── Final message ── */}
+      {/* ── All played nudge ── */}
       <AnimatePresence>
         {allPlayed && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ type: 'spring', stiffness: 100, delay: 0.4 }}
-            className="text-center py-4 px-6"
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-xs text-center italic"
+            style={{ color: 'var(--text-muted)' }}
           >
-            <div className="w-10 h-px mx-auto mb-4" style={{ background: 'var(--amber-pale)' }} />
-            <p className="font-handwritten text-2xl sm:text-3xl leading-relaxed" style={{ color: 'var(--amber-deep)' }}>
-              That&apos;s everything.
-            </p>
-            <p className="font-handwritten text-2xl sm:text-3xl leading-relaxed" style={{ color: 'var(--amber)' }}>
-              Happy 3 months, Meethi. 🧡
-            </p>
-            <div className="w-10 h-px mx-auto mt-4" style={{ background: 'var(--amber-pale)' }} />
-          </motion.div>
+            That&apos;s all of them. Keep going → 🧡
+          </motion.p>
         )}
       </AnimatePresence>
 
