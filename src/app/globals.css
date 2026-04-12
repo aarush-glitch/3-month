@@ -1,29 +1,71 @@
 @import "tailwindcss";
 
-/* Soft Pastel Palette */
+/* ─────────────────────────────────────────────────────
+   AMBER DUSK × BABY'S BREATH
+   Warm terracotta + ivory + soft sage + whisper plum
+───────────────────────────────────────────────────── */
 :root {
-  --blush: #f5d0c5;
-  --blush-dark: #e8b4a6;
-  --blush-light: #fbe8e3;
-  --sage: #b8c9b8;
-  --sage-dark: #9ab39a;
-  --sage-light: #d4e2d4;
-  --cream: #fdf8f3;
-  --cream-dark: #f5ebe0;
-  --rose: #d4a5a5;
-  --rose-dark: #c28b8b;
-  --lavender: #e6dff0;
-  --text-primary: #4a4a4a;
-  --text-secondary: #7a7a7a;
-  --text-muted: #9a9a9a;
+  /* ── Core amber tones ── */
+  --amber:        #C07A50;
+  --amber-light:  #D99B72;
+  --amber-deep:   #9A5E35;
+  --amber-pale:   #F0D8C0;
+  --amber-glow:   rgba(192, 122, 80, 0.14);
+
+  /* ── Ivory base ── */
+  --ivory:        #FBF6EF;
+  --ivory-warm:   #F2E5D0;
+  --ivory-deep:   #E8D5B8;
+
+  /* ── Baby's breath — greens & petal whites ── */
+  --stem:         #8CAF7E;
+  --stem-light:   #B5CEAF;
+  --stem-dark:    #6B9461;
+  --petal:        #FDFCFA;
+  --petal-cream:  #F5EFE4;
+
+  /* ── Deep plum accent ── */
+  --plum:         #7B4F6E;
+  --plum-light:   #AA7A98;
+
+  /* ── Text ── */
+  --text-primary:   #2C1B0E;
+  --text-secondary: #6B4A30;
+  --text-muted:     #9C7862;
+
+  /* ── Backward-compatible aliases (used in existing components) ── */
+  --blush:       #EDD5C5;
+  --blush-dark:  #D4A882;
+  --blush-light: #F7EDE4;
+  --rose:        var(--amber);
+  --rose-dark:   var(--amber-deep);
+  --rose-light:  var(--amber-pale);
+  --sage:        var(--stem);
+  --sage-dark:   var(--stem-dark);
+  --sage-light:  var(--stem-light);
+  --cream:       var(--ivory);
+  --cream-dark:  var(--ivory-warm);
+  --lavender:    #EDE0F0;
 }
 
-* {
-  box-sizing: border-box;
-}
+/* ─── Reset ─── */
+* { box-sizing: border-box; }
 
+/* ─── Body ─── */
 body {
-  background: linear-gradient(135deg, var(--cream) 0%, var(--blush-light) 50%, var(--lavender) 100%);
+  background:
+    radial-gradient(ellipse at 14%  4%,  rgba(192, 122,  80, 0.16) 0%, transparent 48%),
+    radial-gradient(ellipse at 86%  92%, rgba(123,  79, 110, 0.13) 0%, transparent 45%),
+    radial-gradient(ellipse at 55%  45%, rgba(140, 175, 126, 0.10) 0%, transparent 38%),
+    radial-gradient(ellipse at 88%  18%, rgba(185, 148, 210, 0.09) 0%, transparent 36%),
+    radial-gradient(ellipse at  8%  78%, rgba(140, 175, 126, 0.09) 0%, transparent 35%),
+    linear-gradient(148deg,
+      #FBF6EF 0%,
+      #F5E9D5 28%,
+      #EFE0CC 55%,
+      #F2E6D8 78%,
+      #F8F0E8 100%
+    );
   background-attachment: fixed;
   color: var(--text-primary);
   font-family: 'Outfit', 'Inter', sans-serif;
@@ -31,144 +73,168 @@ body {
   overflow-x: hidden;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+/* Subtle noise grain overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--cream);
-}
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--ivory); }
+::-webkit-scrollbar-thumb { background: var(--amber-pale); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--amber-light); }
 
-::-webkit-scrollbar-thumb {
-  background: var(--blush);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--blush-dark);
-}
-
-/* Utility classes */
+/* ─── Typography ─── */
 .font-handwritten {
   font-family: 'Caveat', cursive;
 }
 
+/* ─── Glassmorphism ─── */
 .glass {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(251, 246, 239, 0.68);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.55);
 }
 
-.paper-texture {
-  background:
-    linear-gradient(135deg, #fdfcf9 0%, #f8f4eb 25%, #fdfcf9 50%, #f5f0e6 75%, #fdfcf9 100%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  background-blend-mode: overlay;
-  box-shadow:
-    inset 0 0 60px rgba(139, 90, 43, 0.05),
-    0 4px 20px rgba(0, 0, 0, 0.1),
-    0 8px 40px rgba(139, 90, 43, 0.1);
+.glass-amber {
+  background: rgba(240, 216, 192, 0.40);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(192, 122, 80, 0.22);
 }
 
-/* Vintage paper styling */
+/* ─── Vintage letter paper ─── */
 .vintage-paper {
   position: relative;
-  background: linear-gradient(to bottom,
-      #fdfcfa 0%,
-      #f9f5ed 20%,
-      #faf7f0 40%,
-      #f8f4e8 60%,
-      #fdfcfa 80%,
-      #f9f6ee 100%);
-  border: 1px solid #e8dcc8;
-  border-radius: 4px;
+  background: linear-gradient(to bottom right,
+    #FBF9F5 0%,
+    #F6F0E4 25%,
+    #FAF5EC 50%,
+    #F3EBDA 75%,
+    #FAF8F4 100%
+  );
+  border: 1px solid #DDD0B8;
   box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.05),
-    0 4px 12px rgba(139, 90, 43, 0.08),
-    inset 0 0 40px rgba(139, 90, 43, 0.03);
+    0 2px 6px rgba(0, 0, 0, 0.04),
+    0 10px 32px rgba(139, 90, 43, 0.07),
+    inset 0 0 60px rgba(192, 122, 80, 0.025);
 }
 
 .vintage-paper::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
   pointer-events: none;
-  border-radius: 4px;
+  border-radius: inherit;
+  z-index: 0;
 }
 
-/* Flower decorations */
+/* ─── Baby's Breath positions ─── */
+.babys-breath-fixed-bl {
+  position: fixed;
+  bottom: -20px;
+  left: -20px;
+  width: 300px;
+  height: 300px;
+  opacity: 0.62;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.babys-breath-fixed-tr {
+  position: fixed;
+  top: -20px;
+  right: -20px;
+  width: 330px;
+  height: 330px;
+  opacity: 0.52;
+  pointer-events: none;
+  z-index: 1;
+  transform: rotate(180deg);
+}
+
+.babys-breath-fixed-mr {
+  position: fixed;
+  top: 30%;
+  right: -55px;
+  width: 210px;
+  height: 210px;
+  opacity: 0.30;
+  pointer-events: none;
+  z-index: 1;
+  transform: rotate(90deg);
+}
+
+.babys-breath-fixed-ml {
+  position: fixed;
+  top: 28%;
+  left: -55px;
+  width: 190px;
+  height: 190px;
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 1;
+  transform: rotate(-90deg);
+}
+
+/* ─── Voice note waveform ─── */
+.wave-bar {
+  width: 3px;
+  background: var(--amber);
+  border-radius: 2px;
+  display: inline-block;
+}
+
+/* ─── Animations ─── */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.09); }
+}
+.heartbeat { animation: heartbeat 1.6s ease-in-out infinite; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+.float { animation: float 3s ease-in-out infinite; }
+
+@keyframes ambientPulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50%       { opacity: 0.65; transform: scale(1.06); }
+}
+
+/* ─── Flower / petal decorations (used in Letter) ─── */
 .flower-corner {
   position: absolute;
   width: 80px;
   height: 80px;
-  opacity: 0.5;
+  opacity: 0.38;
   pointer-events: none;
 }
+.flower-corner-tl { top: -10px; left: -10px; transform: rotate(-15deg); }
+.flower-corner-br { bottom: -10px; right: -10px; transform: rotate(165deg); }
 
-.flower-corner-tl {
-  top: -10px;
-  left: -10px;
-  transform: rotate(-15deg);
-}
-
-.flower-corner-br {
-  bottom: -10px;
-  right: -10px;
-  transform: rotate(165deg);
-}
-
-/* Heart animation */
-@keyframes heartbeat {
-
-  0%,
-  100% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.08);
-  }
-}
-
-.heartbeat {
-  animation: heartbeat 1.5s ease-in-out infinite;
-}
-
-/* Fade in animation */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-in-up {
-  animation: fadeInUp 0.8s ease-out forwards;
-}
-
-/* Floating animation */
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.float {
-  animation: float 3s ease-in-out infinite;
+/* ─── Polaroid photo ─── */
+.polaroid {
+  background: #FEFEFE;
+  padding: 8px;
+  padding-bottom: 28px;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    0 6px 20px rgba(0, 0, 0, 0.06);
+  border-radius: 2px;
 }

@@ -1,307 +1,428 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import confetti from 'canvas-confetti';
-import { Heart, Sparkles } from 'lucide-react';
+import { Mic, Play, Pause, X } from 'lucide-react';
 import Image from 'next/image';
-import { sendYesNotification } from '@/lib/notification';
+import { useMusicContext } from '@/context/MusicContext';
 
-export default function Proposal() {
-    const [saidYes, setSaidYes] = useState(false);
-    const [yesScale, setYesScale] = useState(1);
-    const [noAttempts, setNoAttempts] = useState(0);
-    const [noPosition, setNoPosition] = useState({ x: 120, y: 0 });
+/* ─── Note + photo pairs ─── */
+const notes = [
+  {
+    id: 'V1', src: '/vn/V1.m4a',
+    label: 'When I was having a bad day', sublabel: 'You checked on me.',
+    bgFrom: '#F2DBC8', bgTo: '#FAF0E8', accent: '#C07A50',
+    photo: { src: '/images/P1.jpeg', caption: 'When you reminded me it was okay.' },
+  },
+  {
+    id: 'V2', src: '/vn/V2.m4a',
+    label: 'A random one', sublabel: 'Just you being you.',
+    bgFrom: '#E4EDDF', bgTo: '#F0F7EC', accent: '#7AAF6A',
+    photo: { src: '/images/P2.jpeg', caption: 'Your version of art 😄' },
+  },
+  {
+    id: 'V3', src: '/vn/V3.m4a',
+    label: 'You in your element', sublabel: 'I love this one.',
+    bgFrom: '#F2DBC8', bgTo: '#FAF0E8', accent: '#C07A50',
+    photo: { src: '/images/P3.jpeg', caption: 'One of my favourites.' },
+  },
+  {
+    id: 'V4', src: '/vn/V4.m4a',
+    label: 'Before we were us', sublabel: '"I\'ll break your heart" 😂',
+    bgFrom: '#EDE0F2', bgTo: '#F6F0FA', accent: '#9B6DB0',
+    photo: { src: '/images/P4.jpeg', caption: 'Before all of this.' },
+  },
+  {
+    id: 'V5', src: '/vn/V5.m4a',
+    label: 'Something silly', sublabel: 'Couldn\'t not save this.',
+    bgFrom: '#E4EDDF', bgTo: '#F0F7EC', accent: '#7AAF6A',
+    photo: { src: '/images/P5.jpeg', caption: 'A good day.' },
+  },
+  {
+    id: 'V6', src: '/vn/V6.m4a',
+    label: 'One more thing...', sublabel: 'Save this one for last.',
+    bgFrom: '#F0DBC8', bgTo: '#FAF0E8', accent: '#9A5E35',
+    photo: { src: '/images/P6.jpeg', caption: 'Us.' },
+  },
+] as const;
 
-    const maxScale = 8;
-    const scaleIncrement = 0.8;
+type NoteId = (typeof notes)[number]['id'];
 
-    const noButtonPhrases = [
-        "No",
-        "You sure?",
-        "Really though?",
-        "Think harder",
-        "Wrong answer",
-        "Try again",
-        "Nope, try again",
-        "...",
-    ];
-
-    const triggerConfetti = useCallback(() => {
-        const duration = 5 * 1000;
-        const animationEnd = Date.now() + duration;
-        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
-
-        const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
-
-        const interval = window.setInterval(() => {
-            const timeLeft = animationEnd - Date.now();
-
-            if (timeLeft <= 0) {
-                return clearInterval(interval);
-            }
-
-            const particleCount = 50 * (timeLeft / duration);
-
-            confetti({
-                ...defaults,
-                particleCount,
-                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-                colors: ['#f5d0c5', '#d4a5a5', '#b8c9b8', '#e6dff0', '#fbe8e3']
-            });
-            confetti({
-                ...defaults,
-                particleCount,
-                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-                colors: ['#f5d0c5', '#d4a5a5', '#b8c9b8', '#e6dff0', '#fbe8e3']
-            });
-        }, 250);
-    }, []);
-
-    const handleYes = async () => {
-        setSaidYes(true);
-        triggerConfetti();
-
-        try {
-            await sendYesNotification();
-            console.log('Notification sent successfully!');
-        } catch (error) {
-            console.log('Notification not configured or failed:', error);
-        }
-    };
-
-    const handleNoInteraction = () => {
-        setYesScale(prev => Math.min(prev + scaleIncrement, maxScale));
-        setNoAttempts(prev => Math.min(prev + 1, noButtonPhrases.length - 1));
-
-        const maxX = 200;
-        const maxY = 150;
-        const newX = (Math.random() - 0.5) * maxX * 2;
-        const newY = (Math.random() - 0.5) * maxY * 2;
-        setNoPosition({ x: newX, y: newY });
-    };
-
-    const shouldHideNo = yesScale >= maxScale;
-
-    if (saidYes) {
-        return (
-            <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ type: "spring", duration: 0.8 }}
-                className="flex flex-col items-center gap-6 text-center py-8"
-            >
-                {/* Image 20 - Future together */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="relative w-64 h-48 sm:w-80 sm:h-56 rounded-xl overflow-hidden shadow-lg"
-                >
-                    <Image
-                        src="/images/20.jpg"
-                        alt="Our future together"
-                        fill
-                        className="object-cover"
-                    />
-                </motion.div>
-
-                <motion.div
-                    animate={{
-                        scale: [1, 1.2, 1],
-                        rotate: [0, 10, -10, 0]
-                    }}
-                    transition={{
-                        duration: 1.5,
-                        repeat: Infinity
-                    }}
-                >
-                    <Heart className="w-16 h-16 text-[var(--rose)] fill-current" />
-                </motion.div>
-
-                <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="text-3xl sm:text-4xl font-bold text-[var(--text-primary)]"
-                >
-                    Finally! 🎉
-                </motion.h2>
-
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className="text-lg text-[var(--text-secondary)] max-w-md"
-                >
-                    Took you long enough. See you soon, Valentine 😏
-                </motion.p>
-
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.7 }}
-                    className="flex gap-2 mt-4"
-                >
-                    {[...Array(5)].map((_, i) => (
-                        <motion.div
-                            key={i}
-                            animate={{
-                                y: [0, -10, 0],
-                                rotate: [0, 10, -10, 0]
-                            }}
-                            transition={{
-                                duration: 1,
-                                delay: i * 0.1,
-                                repeat: Infinity
-                            }}
-                        >
-                            <Sparkles className="w-6 h-6 text-[var(--blush-dark)]" />
-                        </motion.div>
-                    ))}
-                </motion.div>
-            </motion.div>
-        );
-    }
-
-    return (
+/* ─── Compact waveform ─── */
+function Waveform({ playing, accent }: { playing: boolean; accent: string }) {
+  return (
+    <div className="flex items-end gap-[2px] h-4 mt-2">
+      {[0.5, 0.9, 0.6, 1.0, 0.7].map((base, i) => (
         <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="flex flex-col items-center gap-6 py-4 relative"
+          key={i}
+          style={{ background: accent, borderRadius: 2, width: 2.5 }}
+          animate={playing ? { height: [`3px`, `${base * 14}px`, `3px`] } : { height: '3px' }}
+          transition={{ duration: 0.5 + i * 0.06, repeat: playing ? Infinity : 0, delay: i * 0.09, ease: 'easeInOut' }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* ─── Full-screen photo reveal (auto-dismisses after 4s) ─── */
+function PhotoReveal({
+  photo, accent, onClose,
+}: {
+  photo: { src: string; caption: string };
+  accent: string;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const t = setTimeout(onClose, 4000);
+    return () => clearTimeout(t);
+  }, [onClose]);
+
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, [onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center p-6"
+      style={{ background: 'rgba(44,27,14,0.88)', backdropFilter: 'blur(12px)' }}
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ y: -16, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.1 }}
+        className="mb-5 px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase"
+        style={{ background: accent, color: '#fff' }}
+      >
+        ✦ Photo Unlocked
+      </motion.div>
+
+      <motion.div
+        initial={{ scale: 0.74, opacity: 0, rotate: -4 }}
+        animate={{ scale: 1, opacity: 1, rotate: 1.5 }}
+        transition={{ type: 'spring', stiffness: 180, damping: 20, delay: 0.15 }}
+        className="polaroid"
+        style={{ maxWidth: 260 }}
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="relative w-[228px] h-[228px] rounded-sm overflow-hidden bg-white">
+          <Image src={photo.src} alt={photo.caption} fill className="object-contain" />
+        </div>
+        <p className="font-handwritten text-lg text-[var(--text-secondary)] text-center mt-3 leading-snug px-2">
+          {photo.caption}
+        </p>
+      </motion.div>
+
+      <motion.p
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
+        className="mt-6 text-xs text-white/50 tracking-wide"
+      >
+        Tap anywhere to continue
+      </motion.p>
+
+      {/* Auto-dismiss progress bar */}
+      <motion.div
+        className="absolute bottom-0 left-0 h-[3px]"
+        style={{ background: accent }}
+        initial={{ width: '100%' }} animate={{ width: '0%' }}
+        transition={{ duration: 4, ease: 'linear' }}
+      />
+    </motion.div>
+  );
+}
+
+/* ─── Lightbox (tap photo in bottom grid) ─── */
+function Lightbox({ photo, onClose }: { photo: { src: string; caption: string }; onClose: () => void }) {
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, [onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-6"
+      style={{ background: 'rgba(44,27,14,0.85)', backdropFilter: 'blur(10px)' }}
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.82, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.82, opacity: 0 }}
+        transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+        className="relative max-w-xs w-full"
+        onClick={e => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          className="absolute -top-3 -right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center shadow-md"
+          style={{ background: 'var(--ivory)', color: 'var(--text-secondary)' }}
         >
-            {/* Images row - Image 4 and 6 */}
-            <div className="flex gap-3 sm:gap-4 mb-2">
-                <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-xl overflow-hidden shadow-md"
-                >
-                    <Image
-                        src="/images/4.jpg"
-                        alt="With you"
-                        fill
-                        className="object-cover"
-                    />
-                </motion.div>
-                <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-xl overflow-hidden shadow-md"
-                >
-                    <Image
-                        src="/images/6.jpg"
-                        alt="I love you everyday"
-                        fill
-                        className="object-cover"
-                    />
-                </motion.div>
-            </div>
+          <X className="w-4 h-4" />
+        </button>
+        <div className="polaroid">
+          <div className="relative w-full aspect-square rounded-sm overflow-hidden bg-white">
+            <Image src={photo.src} alt={photo.caption} fill className="object-contain" />
+          </div>
+          <p className="font-handwritten text-base text-[var(--text-secondary)] text-center mt-3 leading-snug px-1">
+            {photo.caption}
+          </p>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
 
-            <div className="text-center">
-                <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="inline-block mb-3"
-                >
-                    <Heart className="w-10 h-10 text-[var(--rose)] fill-current mx-auto" />
-                </motion.div>
+/* ─── Main ─── */
+export default function VoiceNotes() {
+  const { fadeToBackground, restoreVolume } = useMusicContext();
 
-                <h2 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] mb-2">
-                    Alright Meethi...
-                </h2>
-                <p className="text-lg sm:text-xl text-[var(--text-secondary)] font-medium">
-                    Be my Valentine? (You don&apos;t really have a choice)
+  const [playingId,   setPlayingId]   = useState<NoteId | null>(null);
+  const [playedIds,   setPlayedIds]   = useState<Set<NoteId>>(new Set());
+  const [revealModal, setRevealModal] = useState<{ src: string; caption: string; accent: string } | null>(null);
+  const [lightbox,    setLightbox]    = useState<{ src: string; caption: string } | null>(null);
+
+  const audioMap = useRef<Map<string, HTMLAudioElement>>(new Map());
+
+  useEffect(() => {
+    notes.forEach(note => {
+      const audio = new Audio(note.src);
+      audio.preload = 'metadata';
+      audio.addEventListener('ended', () => {
+        setPlayingId(prev => (prev === note.id ? null : prev));
+        restoreVolume();
+      });
+      audioMap.current.set(note.id, audio);
+    });
+    return () => {
+      audioMap.current.forEach(a => { a.pause(); a.src = ''; });
+      restoreVolume();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleToggle = useCallback(
+    (id: NoteId) => {
+      const audio = audioMap.current.get(id);
+      if (!audio) return;
+
+      if (playingId && playingId !== id) {
+        audioMap.current.get(playingId)?.pause();
+      }
+
+      if (playingId === id) {
+        audio.pause();
+        setPlayingId(null);
+        restoreVolume();
+      } else {
+        const isFirstTime = !playedIds.has(id);
+        audio.currentTime = 0;
+        audio.play().catch(err => console.warn('VN play error:', err));
+        setPlayingId(id);
+        setPlayedIds(prev => new Set([...prev, id]));
+        fadeToBackground();
+
+        if (isFirstTime) {
+          const note = notes.find(n => n.id === id)!;
+          setTimeout(() => {
+            setRevealModal({ src: note.photo.src, caption: note.photo.caption, accent: note.accent });
+          }, 350);
+        }
+      }
+    },
+    [playingId, playedIds, fadeToBackground, restoreVolume],
+  );
+
+  const unlockedCount = playedIds.size;
+  const allPlayed     = unlockedCount >= notes.length;
+
+  /* Ordered unlocked photos for the bottom gallery */
+  const unlockedPhotos = notes
+    .filter(n => playedIds.has(n.id))
+    .map(n => ({ id: n.id, accent: n.accent, ...n.photo }));
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.7 }}
+      className="w-full max-w-sm mx-auto flex flex-col items-center gap-5 pb-4"
+    >
+      {/* ── Header ── */}
+      <motion.div
+        initial={{ opacity: 0, y: -18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="text-center pt-2 w-full"
+      >
+        <p className="text-[10px] uppercase tracking-[0.25em] text-[var(--text-muted)] mb-1.5">
+          One last thing, before you go
+        </p>
+        <h2 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">
+          I saved these.{' '}
+          <span style={{ color: 'var(--amber)' }}>For you.</span>
+        </h2>
+        <p className="text-sm text-[var(--text-secondary)] mt-1">
+          Each note unlocks a photo. 🌿
+        </p>
+      </motion.div>
+
+      {/* ── Note cards in 2×3 grid ── */}
+      <div className="grid grid-cols-2 gap-2.5 w-full">
+        {notes.map((note, i) => {
+          const isPlaying = playingId === note.id;
+          const hasPlayed = playedIds.has(note.id);
+
+          return (
+            <motion.button
+              key={note.id}
+              onClick={() => handleToggle(note.id)}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 + i * 0.06 }}
+              whileHover={{ scale: 1.02, y: -1 }}
+              whileTap={{ scale: 0.97 }}
+              className="text-left rounded-2xl p-3.5 border border-white/70 transition-all duration-300"
+              style={{
+                background: `linear-gradient(135deg, ${note.bgFrom}, ${note.bgTo})`,
+                boxShadow: isPlaying
+                  ? `0 0 0 2px ${note.accent}, 0 6px 20px ${note.accent}30`
+                  : '0 2px 6px rgba(0,0,0,0.06)',
+              }}
+            >
+              {/* Top row: mic + play button */}
+              <div className="flex items-center justify-between mb-2">
+                <Mic
+                  className="w-3.5 h-3.5"
+                  style={{ color: isPlaying ? note.accent : 'var(--text-muted)' }}
+                />
+                <motion.div
+                  animate={isPlaying ? { scale: [1, 1.14, 1] } : { scale: 1 }}
+                  transition={{ duration: 0.9, repeat: isPlaying ? Infinity : 0 }}
+                  className="w-7 h-7 rounded-full flex items-center justify-center shadow-sm"
+                  style={{
+                    background: isPlaying ? note.accent : 'rgba(255,255,255,0.80)',
+                    color: isPlaying ? '#fff' : 'var(--text-secondary)',
+                  }}
+                >
+                  {isPlaying
+                    ? <Pause className="w-3 h-3" />
+                    : <Play  className="w-3 h-3 ml-px" />
+                  }
+                </motion.div>
+              </div>
+
+              {/* Label */}
+              <p className="text-xs font-semibold text-[var(--text-primary)] leading-snug">
+                {note.label}
+              </p>
+              <p className="text-[10px] text-[var(--text-muted)] mt-0.5 leading-snug">
+                {note.sublabel}
+              </p>
+
+              {/* Waveform */}
+              <Waveform playing={isPlaying} accent={note.accent} />
+
+              {/* Unlocked badge */}
+              {hasPlayed && !isPlaying && (
+                <p className="mt-1.5 text-[9px] opacity-55" style={{ color: note.accent }}>
+                  ✓ unlocked
                 </p>
-                <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-3 max-w-sm mx-auto">
-                    We don&apos;t really have to go on 14th because Ik you find the idea of Valentine&apos;s Day not so &quot;cool&quot; but let&apos;s go have a proper date (Our first date)
-                </p>
+              )}
+            </motion.button>
+          );
+        })}
+      </div>
+
+      {/* ── Photo row at the bottom — side by side, adds one per note ── */}
+      <AnimatePresence>
+        {unlockedCount > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full"
+          >
+            <p className="text-center text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] mb-3">
+              {unlockedCount} of {notes.length} unlocked
+            </p>
+
+            {/* Horizontal scroll row */}
+            <div className="flex gap-3 overflow-x-auto pb-3 w-full" style={{ scrollbarWidth: 'none' }}>
+              <AnimatePresence>
+                {unlockedPhotos.map((photo, i) => (
+                  <motion.button
+                    key={photo.id}
+                    onClick={() => setLightbox({ src: photo.src, caption: photo.caption })}
+                    initial={{ opacity: 0, scale: 0.78, x: 20 }}
+                    animate={{ opacity: 1, scale: 1,    x: 0 }}
+                    exit={{ opacity: 0, scale: 0.78 }}
+                    transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                    whileHover={{ scale: 1.04, rotate: 0 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="polaroid flex-shrink-0 group"
+                    style={{ rotate: `${i % 2 === 0 ? -2 : 2}deg` } as React.CSSProperties}
+                    aria-label={`Open photo: ${photo.caption}`}
+                  >
+                    <div className="relative w-[100px] h-[100px] rounded-sm overflow-hidden bg-white">
+                      <Image src={photo.src} alt={photo.caption} fill className="object-contain" />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-200" />
+                    </div>
+                    {/* Accent dot */}
+                    <div
+                      className="absolute -top-1.5 -right-1.5 w-3 h-3 rounded-full border-2 border-white shadow-sm"
+                      style={{ background: photo.accent }}
+                    />
+                    <p className="font-handwritten text-[0.7rem] text-[var(--text-secondary)] text-center mt-2 leading-tight px-0.5 max-w-[100px]">
+                      {photo.caption}
+                    </p>
+                  </motion.button>
+                ))}
+              </AnimatePresence>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-            <div className="flex gap-4 items-center justify-center relative min-h-[100px] w-full">
-                {/* Yes Button */}
-                <motion.button
-                    onClick={handleYes}
-                    animate={{
-                        scale: yesScale,
-                    }}
-                    whileHover={{ scale: yesScale * 1.05 }}
-                    whileTap={{ scale: yesScale * 0.95 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="px-8 sm:px-12 py-3 sm:py-4 
-                     bg-gradient-to-r from-[var(--rose)] to-[var(--blush-dark)]
-                     text-white font-semibold text-lg sm:text-xl rounded-full
-                     shadow-lg hover:shadow-xl transition-shadow duration-300
-                     hover:from-[var(--rose-dark)] hover:to-[var(--rose)]
-                     z-10"
-                    style={{
-                        ...(yesScale >= maxScale - 1 && {
-                            position: 'fixed',
-                            top: '50%',
-                            left: '50%',
-                            transform: `translate(-50%, -50%) scale(${yesScale})`,
-                        })
-                    }}
-                >
-                    Yes
-                </motion.button>
+      {/* ── Final message ── */}
+      <AnimatePresence>
+        {allPlayed && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 100, delay: 0.4 }}
+            className="text-center py-4 px-6"
+          >
+            <div className="w-10 h-px mx-auto mb-4" style={{ background: 'var(--amber-pale)' }} />
+            <p className="font-handwritten text-2xl sm:text-3xl leading-relaxed" style={{ color: 'var(--amber-deep)' }}>
+              That&apos;s everything.
+            </p>
+            <p className="font-handwritten text-2xl sm:text-3xl leading-relaxed" style={{ color: 'var(--amber)' }}>
+              Happy 3 months, Meethi. 🧡
+            </p>
+            <div className="w-10 h-px mx-auto mt-4" style={{ background: 'var(--amber-pale)' }} />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-                {/* No Button */}
-                <AnimatePresence>
-                    {!shouldHideNo && (
-                        <motion.button
-                            onClick={handleNoInteraction}
-                            onMouseEnter={handleNoInteraction}
-                            onTouchStart={handleNoInteraction}
-                            initial={{ opacity: 1, scale: 1 }}
-                            animate={{
-                                x: noPosition.x,
-                                y: noPosition.y,
-                                opacity: Math.max(0.3, 1 - (yesScale - 1) / (maxScale - 1)),
-                                scale: Math.max(0.5, 1 - (yesScale - 1) / (maxScale - 1) * 0.5),
-                            }}
-                            exit={{ opacity: 0, scale: 0 }}
-                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                            className="px-6 sm:px-8 py-3 sm:py-4 
-                       bg-[var(--sage-light)] text-[var(--text-secondary)]
-                       font-medium text-base sm:text-lg rounded-full
-                       shadow-md hover:shadow-lg transition-all duration-300
-                       border border-[var(--sage)] absolute z-20"
-                        >
-                            {noButtonPhrases[noAttempts]}
-                        </motion.button>
-                    )}
-                </AnimatePresence>
-            </div>
+      {/* ── Photo reveal modal ── */}
+      <AnimatePresence>
+        {revealModal && (
+          <PhotoReveal
+            photo={{ src: revealModal.src, caption: revealModal.caption }}
+            accent={revealModal.accent}
+            onClose={() => setRevealModal(null)}
+          />
+        )}
+      </AnimatePresence>
 
-            {/* Hint text */}
-            {noAttempts > 0 && !shouldHideNo && (
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-sm text-[var(--text-muted)] italic text-center"
-                >
-                    {noAttempts >= 5
-                        ? "That button is looking pretty big now..."
-                        : noAttempts >= 3
-                            ? "The button is growing. Coincidence?"
-                            : "Interesting choice..."}
-                </motion.p>
-            )}
-
-            {/* Final message when No disappears */}
-            {shouldHideNo && (
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-lg text-[var(--rose)] font-medium text-center fixed bottom-32 left-0 right-0 z-20"
-                >
-                    You know what to do.
-                </motion.p>
-            )}
-        </motion.div>
-    );
+      {/* ── Lightbox ── */}
+      <AnimatePresence>
+        {lightbox && (
+          <Lightbox photo={lightbox} onClose={() => setLightbox(null)} />
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
 }

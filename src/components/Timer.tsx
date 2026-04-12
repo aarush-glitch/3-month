@@ -2,101 +2,75 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Heart } from 'lucide-react';
 
 interface TimeElapsed {
-  years: number;
   months: number;
-  days: number;
-  hours: number;
+  days:   number;
+  hours:  number;
   minutes: number;
   seconds: number;
+  totalDays: number;
 }
 
-// Start date: January 12th, 2026 at 9:00 PM IST
+// Start date: January 12, 2026 at 9:00 PM IST
 const START_DATE = new Date('2026-01-12T21:00:00+05:30');
 
 function calculateTimeElapsed(): TimeElapsed {
-  const now = new Date();
+  const now  = new Date();
   const diff = now.getTime() - START_DATE.getTime();
 
-  if (diff < 0) {
-    return { years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
-  }
+  if (diff < 0) return { months: 0, days: 0, hours: 0, minutes: 0, seconds: 0, totalDays: 0 };
 
-  const seconds = Math.floor(diff / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
+  const totalSeconds  = Math.floor(diff / 1000);
+  const totalMinutes  = Math.floor(totalSeconds / 60);
+  const totalHours    = Math.floor(totalMinutes / 60);
+  const totalDays     = Math.floor(totalHours   / 24);
 
-  // Calculate years and remaining months/days
-  const startYear = START_DATE.getFullYear();
-  const startMonth = START_DATE.getMonth();
-  const startDay = START_DATE.getDate();
+  // Calendar-accurate months + remaining days
+  const nowYear       = now.getFullYear();
+  const nowMonth      = now.getMonth();
+  const nowDay        = now.getDate();
+  const startYear     = START_DATE.getFullYear();
+  const startMonth    = START_DATE.getMonth();
+  const startDay      = START_DATE.getDate();
 
-  const nowYear = now.getFullYear();
-  const nowMonth = now.getMonth();
-  const nowDay = now.getDate();
+  let months       = (nowYear - startYear) * 12 + (nowMonth - startMonth);
+  let daysRemainder = nowDay - startDay;
 
-  let years = nowYear - startYear;
-  let months = nowMonth - startMonth;
-  let daysRemaining = nowDay - startDay;
-
-  if (daysRemaining < 0) {
+  if (daysRemainder < 0) {
     months--;
-    const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-    daysRemaining += prevMonth.getDate();
-  }
-
-  if (months < 0) {
-    years--;
-    months += 12;
+    const prevMonthEnd = new Date(nowYear, nowMonth, 0);
+    daysRemainder += prevMonthEnd.getDate();
   }
 
   return {
-    years,
     months,
-    days: daysRemaining,
-    hours: hours % 24,
-    minutes: minutes % 60,
-    seconds: seconds % 60
+    days:    daysRemainder,
+    hours:   totalHours   % 24,
+    minutes: totalMinutes % 60,
+    seconds: totalSeconds % 60,
+    totalDays,
   };
 }
 
 export default function Timer() {
-  const [time, setTime] = useState<TimeElapsed>({
-    years: 0,
-    months: 0,
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
+  const [time, setTime]     = useState<TimeElapsed>(calculateTimeElapsed());
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const updateTimer = () => {
-      setTime(calculateTimeElapsed());
-    };
-
-    updateTimer();
-    const interval = setInterval(updateTimer, 1000);
-
-    return () => clearInterval(interval);
+    const id = setInterval(() => setTime(calculateTimeElapsed()), 1000);
+    return () => clearInterval(id);
   }, []);
 
-  if (!mounted) {
-    return null;
-  }
+  if (!mounted) return null;
 
-  const timeUnits = [
-    { value: time.years, label: 'years' },
-    { value: time.months, label: 'months' },
-    { value: time.days, label: 'days' },
-    { value: time.hours, label: 'hours' },
-    { value: time.minutes, label: 'mins' },
-    { value: time.seconds, label: 'secs' },
+  const units = [
+    { value: time.months,  label: 'months'  },
+    { value: time.days,    label: 'days'    },
+    { value: time.hours,   label: 'hours'   },
+    { value: time.minutes, label: 'mins'    },
+    { value: time.seconds, label: 'secs'    },
   ];
 
   return (
@@ -104,27 +78,48 @@ export default function Timer() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.3 }}
-      className="flex flex-col items-center gap-4"
+      className="flex flex-col items-center gap-5"
     >
+      {/* Total-days headline */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.45 }}
+        className="glass-amber rounded-2xl px-8 py-4 text-center"
+      >
+        <motion.span
+          key={time.totalDays}
+          initial={{ opacity: 0.6, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+          className="text-5xl sm:text-6xl font-bold"
+          style={{ color: 'var(--amber)' }}
+        >
+          {time.totalDays}
+        </motion.span>
+        <p className="text-xs text-[var(--text-muted)] uppercase tracking-[0.2em] mt-1">total days</p>
+      </motion.div>
+
+      {/* Breakdown row */}
       <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-        {timeUnits.map((unit, index) => (
+        {units.map((unit, index) => (
           <motion.div
             key={unit.label}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-            className="glass rounded-xl px-3 py-2 sm:px-4 sm:py-3 min-w-[60px] sm:min-w-[70px] text-center"
+            transition={{ duration: 0.45, delay: 0.55 + index * 0.08 }}
+            className="glass rounded-xl px-3 py-2 sm:px-4 sm:py-3 min-w-[62px] sm:min-w-[72px] text-center"
           >
             <motion.div
               key={unit.value}
-              initial={{ scale: 1.1 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.2 }}
-              className="text-xl sm:text-2xl font-semibold text-[var(--text-primary)]"
+              initial={{ scale: 1.15, color: 'var(--amber)' }}
+              animate={{ scale: 1, color: 'var(--text-primary)' }}
+              transition={{ duration: 0.25 }}
+              className="text-xl sm:text-2xl font-semibold"
             >
               {unit.value.toString().padStart(2, '0')}
             </motion.div>
-            <div className="text-[10px] sm:text-xs text-[var(--text-muted)] uppercase tracking-wider">
+            <div className="text-[10px] sm:text-xs text-[var(--text-muted)] uppercase tracking-wider mt-0.5">
               {unit.label}
             </div>
           </motion.div>

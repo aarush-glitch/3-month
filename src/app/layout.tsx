@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Caveat, Outfit } from "next/font/google";
+import { MusicProvider } from "@/context/MusicContext";
 import "./globals.css";
 
 const inter = Inter({
@@ -21,10 +22,10 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "For You, Meethi 💕",
-  description: "Something special, just for you.",
+  title: "3 Months With You, Meethi 🧡",
+  description: "Three months of us. Something special, just for you.",
   icons: {
-    icon: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💕</text></svg>",
+    icon: "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧡</text></svg>",
   },
 };
 
@@ -44,7 +45,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${outfit.variable} ${caveat.variable} antialiased`}
       >
-        {children}
+        <MusicProvider>
+          {children}
+        </MusicProvider>
       </body>
     </html>
   );
