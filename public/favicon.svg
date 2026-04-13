@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Amber heart -->
+  <path d="M16 27.5 C16 27.5 3 19.5 3 11.5 A7.5 7.5 0 0 1 16 6.2 A7.5 7.5 0 0 1 29 11.5 C29 19.5 16 27.5 16 27.5Z" fill="#C07A50"/>
+  <!-- Warm inner glow -->
+  <path d="M16 24 C16 24 6.5 17.5 6.5 11.5 A6 6 0 0 1 16 7.8 A6 6 0 0 1 25.5 11.5 C25.5 17.5 16 24 16 24Z" fill="#D99B72" opacity="0.45"/>
+  <!-- Sage leaf sprig top-right of heart -->
+  <ellipse cx="22.5" cy="5.5" rx="3.2" ry="1.6" fill="#8CAF7E" transform="rotate(-35 22.5 5.5)"/>
+  <line x1="20.5" y1="7" x2="23.5" y2="4" stroke="#6B9461" stroke-width="0.8" stroke-linecap="round"/>
+</svg>
