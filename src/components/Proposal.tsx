@@ -104,10 +104,10 @@ function PhotoReveal({
         animate={{ scale: 1, opacity: 1, rotate: 1.5 }}
         transition={{ type: 'spring', stiffness: 180, damping: 20, delay: 0.15 }}
         className="polaroid"
-        style={{ maxWidth: 260 }}
+        style={{ maxWidth: 320 }}
         onClick={e => e.stopPropagation()}
       >
-        <div className="relative w-[228px] h-[228px] rounded-sm overflow-hidden bg-white">
+        <div className="relative w-[288px] h-[288px] rounded-sm overflow-hidden bg-white">
           <Image src={photo.src} alt={photo.caption} fill className="object-contain" />
         </div>
         <p className="font-handwritten text-lg text-[var(--text-secondary)] text-center mt-3 leading-snug px-2">
