@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import Timer from '@/components/Timer';
@@ -26,6 +26,15 @@ export default function Home() {
   const [unlocked, setUnlocked] = useState(false);
   const [currentPhase, setCurrentPhase] = useState(0);
   const [[page, direction], setPage] = useState([0, 0]);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to top on every phase change (important on mobile)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [currentPhase]);
 
   if (!unlocked) {
     return <PasswordGate onUnlock={() => setUnlocked(true)} />;
@@ -211,7 +220,7 @@ export default function Home() {
 
             {/* ── Phase 4: Voice Notes ── */}
             {currentPhase === 4 && (
-              <div className="w-full h-full overflow-y-auto flex items-start justify-center px-4 pt-6 pb-24">
+              <div ref={scrollContainerRef} className="w-full h-full overflow-y-auto flex items-start justify-center px-4 pt-6 pb-24">
                 <VoiceNotes />
               </div>
             )}
