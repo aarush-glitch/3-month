@@ -33,14 +33,14 @@ const notes = [
     photo: { src: '/images/P4.JPG', caption: 'I want this girl to be happy always and on top of the world.' },
   },
   {
-    id: 'V5', src: '/vn/V5.m4a',
+    id: 'V5', src: '/vn/V6.m4a',
     label: 'Something silly', sublabel: 'Couldn\'t not save this.',
     bgFrom: '#E4EDDF', bgTo: '#F0F7EC', accent: '#7AAF6A',
     photo: { src: '/images/P5.jpg', caption: 'The day I should\'ve fallen in love with you.' },
   },
   {
-    id: 'V6', src: '/vn/V6.m4a',
-    label: 'One more thing...', sublabel: 'Save this one for last.',
+    id: 'V6', src: '/vn/V5.m4a',
+    label: 'One more thing...', sublabel: 'I\'m in love with everything about you.',
     bgFrom: '#F0DBC8', bgTo: '#FAF0E8', accent: '#9A5E35',
     photo: { src: '/images/P6.jpg', caption: 'The day I fell in love with that smile.' },
   },
