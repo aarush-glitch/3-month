@@ -15,7 +15,9 @@ You're weirdly patient with me. You push back when I need it. You're honest in t
 
 You make ordinary things feel worth paying attention to. A voice note. A weird little scribble on paper. A walk. God I miss those walks in college. Things that should be nothing end up mattering because you're in them.
 
-I don't think I'll ever be able to express how much I love you but I can definitely say that instead of a dead resting face you've turned my resting face into a smiling face and that's all you.
+I'm not saying we won't have our ups and lows, but what I'm saying is that after each fight after each misunderstanding you're the only person I want to talk to. I WILL fuck up, you MIGHT too but I'll always want to resolve things with you because you're all that matters to me.
+
+I don't think I'll ever be able to express how much I love you but I can definitely say that instead of a dead resting face you've turned mine into a smiling one and that's all you.
 
 Here's to whatever comes next.
 
