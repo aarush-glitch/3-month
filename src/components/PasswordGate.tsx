@@ -9,7 +9,7 @@ interface PasswordGateProps {
   onUnlock: () => void;
 }
 
-const CORRECT_PASSWORD = 'Ihateyou';
+const CORRECT_PASSWORD = '1201';
 
 export default function PasswordGate({ onUnlock }: PasswordGateProps) {
   const [value, setValue] = useState('');
@@ -189,7 +189,7 @@ export default function PasswordGate({ onUnlock }: PasswordGateProps) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                 >
-                  It&apos;s something you say when you&apos;re actually obsessed 🙃
+                  The day we started dating hehe (DDMM) 🗓️
                 </motion.p>
               )}
             </AnimatePresence>
